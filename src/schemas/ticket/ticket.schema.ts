@@ -17,10 +17,10 @@ export class Ticket {
   @Prop({ required: true })
   ticket_desc?: string;
 
-  @Prop({ type: Types.ObjectId, ref: USER_MODEL, required: true })
+  @Prop({ type: Types.ObjectId, ref: USER_MODEL })
   created_by: Types.ObjectId | User;
 
-  @Prop({ type: Types.ObjectId, ref: USER_MODEL, required: true })
+  @Prop({ type: Types.ObjectId, ref: USER_MODEL })
   assign_to?: Types.ObjectId | User;
 
   @Prop({
@@ -29,6 +29,9 @@ export class Ticket {
     required: true,
   })
   status?: STATUS;
+
+  @Prop()
+  email?: string;
 }
 
 export type TicketDocument = Ticket & Document;

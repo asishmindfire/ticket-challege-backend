@@ -35,6 +35,7 @@ export class CommentService {
             username: item.username,
             comment: item.comment,
             date: moment().tz('Asia/Kolkata').format(),
+            // date: date.now();
           };
         },
       );
@@ -137,7 +138,7 @@ export class CommentService {
           'comments.$.date': moment().tz('Asia/Kolkata').format(),
         },
       },
-      { upsert: false, strict: false },
+      { upsert: false },
     );
 
     if (

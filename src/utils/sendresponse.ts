@@ -6,7 +6,7 @@ export default function sendResponse<T>({
   message,
 }): IResponse<T> {
   return {
-    status: status || true,
+    status: status,
     data: data || [],
     message: message || 'Success',
   };

@@ -30,4 +30,17 @@ export class UserService implements IUserService {
       throw new ServiceUnavailableException();
     }
   }
+
+  async find(id: string): Promise<IResponse<string>> {
+    try {
+      const users = await this.userModel.findOne({ _id: id });
+      return sendResponse({
+        status: true,
+        data: users,
+        message: 'Records retrieved successfully.',
+      });
+    } catch (error) {
+      throw new ServiceUnavailableException();
+    }
+  }
 }

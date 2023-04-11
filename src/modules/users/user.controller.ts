@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { IResponse } from '../shared/interfaces/response.interface';
 import { UserService } from './user.service';
 
@@ -8,7 +8,11 @@ export class TicketController {
 
   @Get()
   findAll(): Promise<IResponse<string>> {
-    console.log(`Reached`);
     return this.userService.findAll();
+  }
+
+  @Get(':id')
+  findById(@Param('id') id: string): Promise<IResponse<string>> {
+    return this.userService.find(id);
   }
 }
