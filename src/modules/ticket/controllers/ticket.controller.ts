@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { IResponse } from '../../shared/interfaces/response.interface';
 import { TicketDto } from '../dto/ticket.dto';
@@ -17,14 +18,23 @@ export class TicketController {
 
   @Post()
   create(@Body() ticketData: TicketDto): Promise<IResponse<string>> {
-    console.log('ticketData =>', ticketData);
     return this.ticketService.create(ticketData);
   }
 
-  @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  @Post('/search')
+  filter(@Body() searchData: string) {
+    return this.ticketService.filterticket(searchData);
   }
+
+  @Get()
+  findTickets(@Query() queryData: any) {
+    return this.ticketService.findPaginatedTickets(queryData);
+  }
+
+  // @Get()
+  // findAll() {
+  //   return this.ticketService.findAll();
+  // }
 
   @Put(':id')
   update(

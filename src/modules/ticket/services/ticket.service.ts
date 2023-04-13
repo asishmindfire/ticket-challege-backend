@@ -128,4 +128,84 @@ export class TicketService {
       throw new ServiceUnavailableException();
     }
   }
+
+  async findPaginatedTickets(queryData: any) {
+    try {
+      const tickets = await this.ticketModel.find({});
+
+      const page = +queryData.page;
+      const limit = +queryData.limit;
+
+      const startIndex = (page - 1) * limit;
+      const lastIndex = page * limit;
+
+      const results: any = {};
+      results.totalTickets = tickets.length;
+      results.pageCount = Math.ceil(tickets.length / limit);
+
+      if (lastIndex < tickets.length) {
+        results.next = {
+          page: page + 1,
+        };
+      }
+      if (startIndex > 0) {
+        results.prev = {
+          page: page - 1,
+        };
+      }
+
+      results.result = tickets.slice(startIndex, lastIndex);
+
+      return {
+        status: true,
+        data: results,
+        message: 'Tickets retrieved successfully.',
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException();
+    }
+  }
+
+  async filterticket(queryData: any) {
+    console.log('queryData', queryData);
+
+    try {
+      let tickets = await this.ticketModel.find({});
+      tickets = tickets.filter((ticket: any) => {
+        return ticket.product.toLowerCase().match(queryData.data.toLowerCase());
+      });
+      console.log(tickets);
+
+      // const page = +queryData.page;
+      // const limit = +queryData.limit;
+
+      // const startIndex = (page - 1) * limit;
+      // const lastIndex = page * limit;
+
+      // const results: any = {};
+      // results.totalTickets = tickets.length;
+      // results.pageCount = Math.ceil(tickets.length / limit);
+
+      // if (lastIndex < tickets.length) {
+      //   results.next = {
+      //     page: page + 1,
+      //   };
+      // }
+      // if (startIndex > 0) {
+      //   results.prev = {
+      //     page: page - 1,
+      //   };
+      // }
+
+      // results.result = tickets.slice(startIndex, lastIndex);
+
+      return {
+        status: true,
+        data: tickets,
+        message: 'Filtered tickets retrieved successfully.',
+      };
+    } catch (error) {
+      throw new ServiceUnavailableException();
+    }
+  }
 }

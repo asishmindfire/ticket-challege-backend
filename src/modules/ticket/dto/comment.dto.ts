@@ -1,10 +1,10 @@
-import { Type } from 'class-transformer';
+// import { Type } from 'class-transformer';
 import {
   IsString,
   IsNotEmpty,
-  ValidateNested,
-  IsArray,
-  IsObject,
+  // ValidateNested,
+  // IsArray,
+  // IsObject,
   IsOptional,
 } from 'class-validator';
 
@@ -28,10 +28,18 @@ export class AddCommentDto {
   @IsNotEmpty()
   ticketId: string;
 
-  @IsArray()
-  @Type(() => IndividualCommentDto)
-  @ValidateNested({ each: true })
-  comments?: IndividualCommentDto[];
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  comment: string;
+
+  // @IsArray()
+  // @Type(() => IndividualCommentDto)
+  // @ValidateNested({ each: true })
+  // comments?: IndividualCommentDto[];
 }
 
 export class AllCommentDto {
@@ -41,10 +49,18 @@ export class AllCommentDto {
 }
 
 export class UpdateCommentDto {
-  @IsObject()
-  @Type(() => IndividualCommentDto)
-  @ValidateNested()
-  update_data: IndividualCommentDto;
+  // @IsObject()
+  // @Type(() => IndividualCommentDto)
+  // @ValidateNested()
+  // update_data: IndividualCommentDto;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  comment: string;
 }
 
 export class RemoveCommentDto {
@@ -54,5 +70,5 @@ export class RemoveCommentDto {
 
   @IsString()
   @IsNotEmpty()
-  cid: number;
+  cid: string;
 }
