@@ -2,14 +2,21 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { User, USER_MODEL } from '../user/user.schema';
 import { Document } from 'mongoose';
-import { STATUS } from 'src/constants';
+import { PRODUCT, STATUS } from 'src/constants';
 
 @Schema({
   timestamps: true,
 })
 export class Ticket {
-  @Prop({ required: true })
-  product: string;
+  @Prop({
+    type: String,
+    enum: Object.keys(PRODUCT),
+    required: true,
+  })
+  product: PRODUCT;
+
+  // @Prop({ required: true })
+  // product: string;
 
   @Prop({ required: true })
   ticket_name: string;

@@ -1,12 +1,4 @@
-// import { Type } from 'class-transformer';
-import {
-  IsString,
-  IsNotEmpty,
-  // ValidateNested,
-  // IsArray,
-  // IsObject,
-  IsOptional,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class IndividualCommentDto {
   @IsString()
@@ -30,16 +22,11 @@ export class AddCommentDto {
 
   @IsString()
   @IsNotEmpty()
-  username: string;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
   comment: string;
-
-  // @IsArray()
-  // @Type(() => IndividualCommentDto)
-  // @ValidateNested({ each: true })
-  // comments?: IndividualCommentDto[];
 }
 
 export class AllCommentDto {
@@ -49,11 +36,6 @@ export class AllCommentDto {
 }
 
 export class UpdateCommentDto {
-  // @IsObject()
-  // @Type(() => IndividualCommentDto)
-  // @ValidateNested()
-  // update_data: IndividualCommentDto;
-
   @IsString()
   @IsNotEmpty()
   id: string;

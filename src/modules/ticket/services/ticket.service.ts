@@ -1,11 +1,8 @@
 import {
   BadRequestException,
-  // HttpException,
-  // HttpStatus,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
-  // NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -106,8 +103,6 @@ export class TicketService {
       }
 
       const deleteTicket = await this.ticketModel.deleteOne({ _id: id });
-      console.log(`Delete ticket response =>`, deleteTicket);
-      // Delete ticket response => { acknowledged: true, deletedCount: 1 }
       if (
         deleteTicket.acknowledged === true &&
         deleteTicket.deletedCount === 1
@@ -167,38 +162,11 @@ export class TicketService {
   }
 
   async filterticket(queryData: any) {
-    console.log('queryData', queryData);
-
     try {
       let tickets = await this.ticketModel.find({});
       tickets = tickets.filter((ticket: any) => {
         return ticket.product.toLowerCase().match(queryData.data.toLowerCase());
       });
-      console.log(tickets);
-
-      // const page = +queryData.page;
-      // const limit = +queryData.limit;
-
-      // const startIndex = (page - 1) * limit;
-      // const lastIndex = page * limit;
-
-      // const results: any = {};
-      // results.totalTickets = tickets.length;
-      // results.pageCount = Math.ceil(tickets.length / limit);
-
-      // if (lastIndex < tickets.length) {
-      //   results.next = {
-      //     page: page + 1,
-      //   };
-      // }
-      // if (startIndex > 0) {
-      //   results.prev = {
-      //     page: page - 1,
-      //   };
-      // }
-
-      // results.result = tickets.slice(startIndex, lastIndex);
-
       return {
         status: true,
         data: tickets,

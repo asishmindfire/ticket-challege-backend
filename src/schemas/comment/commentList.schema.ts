@@ -5,7 +5,6 @@ import { IsNumber } from 'class-validator';
 export class CommentList {
   @Prop({ required: true })
   username: string;
-  // Reference to user collection
 
   @Prop({ required: true })
   comment: string;

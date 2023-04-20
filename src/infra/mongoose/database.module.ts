@@ -4,7 +4,6 @@ import { MongooseConfigService } from './mongoose.config.service';
 
 @Module({
   imports: [
-    // Method-3 - This approach is recommended to use
     MongooseModule.forRootAsync({
       useClass: MongooseConfigService,
     }),

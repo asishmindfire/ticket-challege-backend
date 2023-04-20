@@ -10,11 +10,9 @@ import sendResponse from 'src/utils/sendresponse';
 import { IResponse } from '../../shared/interfaces/response.interface';
 import {
   AddCommentDto,
-  // IndividualCommentDto,
   RemoveCommentDto,
   UpdateCommentDto,
 } from '../dto/comment.dto';
-// import * as moment from 'moment-timezone';
 import { CommentDocument, COMMENT_MODEL } from 'src/schemas/comment';
 
 @Injectable()
@@ -28,7 +26,7 @@ export class CommentService {
     try {
       const dataToBeInserte = {
         ticketId: addCommentDto.ticketId,
-        username: addCommentDto.username,
+        userId: addCommentDto.userId,
         comment: addCommentDto.comment,
       };
 
@@ -39,63 +37,6 @@ export class CommentService {
         data: insertedComment,
         message: 'Comment added successfully.',
       });
-
-      // const minm = 100000;
-      // const maxm = 999999;
-      // const commetsList = addCommentDto.comments.map(
-      //   (item: IndividualCommentDto) => {
-      //     return {
-      //       id: Math.floor(Math.random() * (maxm - minm + 1)) + minm,
-      //       username: item.username,
-      //       comment: item.comment,
-      //       date: moment().tz('Asia/Kolkata').format(),
-      //       // date: date.now();
-      //     };
-      //   },
-      // );
-      // console.log(`===>`, commetsList);
-      // const comment = await this.commentModel.findOne({
-      //   ticketId: addCommentDto.ticketId,
-      // });
-      // if (!comment) {
-      //   const commentToBeInserted = {
-      //     ticketId: addCommentDto.ticketId,
-      //     comments: commetsList,
-      //   };
-      //   const insertedComment = await this.commentModel.create(
-      //     commentToBeInserted,
-      //   );
-      //   return sendResponse({
-      //     status: true,
-      //     data: insertedComment,
-      //     message: 'Comment added successfully.',
-      //   });
-      // } else {
-      //   const commentToBeUpdated = await this.commentModel.updateOne(
-      //     { ticketId: addCommentDto.ticketId },
-      //     {
-      //       $push: {
-      //         comments: { $each: commetsList },
-      //       },
-      //     },
-      //     { upsert: false },
-      //   );
-      //   if (
-      //     commentToBeUpdated.acknowledged == true &&
-      //     commentToBeUpdated.modifiedCount == 0
-      //   ) {
-      //     return sendResponse({
-      //       status: false,
-      //       data: '',
-      //       message: 'Please provide a valid ticket.',
-      //     });
-      //   }
-      //   return sendResponse({
-      //     status: true,
-      //     data: commentToBeUpdated,
-      //     message: 'Record Updated Successfully.',
-      //   });
-      // }
     } catch (error) {
       console.log(`error =>`, error);
 
@@ -109,8 +50,6 @@ export class CommentService {
 
   async findCommentById(id: string): Promise<IResponse<string>> {
     const comments = await this.commentModel.find({ ticketId: id });
-    // const comments = await this.commentModel.find();
-    // console.log(comments);
     if (!comments) {
       return sendResponse({
         status: true,
@@ -123,11 +62,6 @@ export class CommentService {
       data: comments,
       message: 'Records retrieved Successfully.',
     });
-    // return sendResponse({
-    //   status: true,
-    //   data: [comments],
-    //   message: 'Records retrieved Successfully.',
-    // });
   }
 
   async update(
@@ -160,19 +94,6 @@ export class CommentService {
       { upsert: false },
     );
 
-    // const commentToBeUpdated = await this.commentModel.updateOne(
-    //   {
-    //     'comments.id': updateCommentDto.update_data.id,
-    //   },
-    //   {
-    //     $set: {
-    //       'comments.$.comment': updateCommentDto.update_data.comment,
-    //       'comments.$.date': moment().tz('Asia/Kolkata').format(),
-    //     },
-    //   },
-    //   { upsert: false },
-    // );
-
     if (
       commentToBeUpdate.acknowledged == true &&
       commentToBeUpdate.modifiedCount == 0
@@ -183,12 +104,6 @@ export class CommentService {
         message: 'Please provide a valid ticket.',
       });
     }
-
-    // return sendResponse({
-    //   status: true,
-    //   data: commentToBeUpdated,
-    //   message: 'Record Updated Successfully.',
-    // });
 
     return sendResponse({
       status: true,
@@ -206,20 +121,9 @@ export class CommentService {
       throw new NotFoundException('Comment not found');
     }
 
-    // const filteredComment = comment[0].comments.filter(
-    //   (item) => item.id !== removeCommentDto.cid.toString(),
-    // );
-
-    // console.log('comments =>', comments);
-
     const comment = comments.find(
       (item) => item._id.toString() === removeCommentDto.cid,
     );
-    // console.log('comment =>', comment);
-
-    // const checkAvail = await this.commentModel.findOne({
-    //   _id: comment._id,
-    // });
 
     if (!comment) {
       throw new NotFoundException('Comment not found');
@@ -228,18 +132,6 @@ export class CommentService {
     const commentToBeDeleted = await this.commentModel.deleteOne({
       _id: comment._id,
     });
-
-    console.log('commentToBeDeleted =>', commentToBeDeleted);
-    // { acknowledged: true, deletedCount: 1 }
-    // const commentToBeUpdated = await this.commentModel.updateOne(
-    //   { ticketId: removeCommentDto.tid },
-    //   {
-    //     $set: {
-    //       comments: filteredComment,
-    //     },
-    //   },
-    //   { upsert: false },
-    // );
 
     if (
       commentToBeDeleted.acknowledged == true &&
