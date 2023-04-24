@@ -5,6 +5,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TicketModule } from './modules/ticket/ticket.module';
 import { UserModule } from './modules/users/user.module';
 import { MongooseModelsModule } from './schemas/mongoose-model.module';
+import { AllExceptionsFilter } from './core/all-exceptions-filter';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { MongooseModelsModule } from './schemas/mongoose-model.module';
     TicketModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
 })
 export class AppModule {}

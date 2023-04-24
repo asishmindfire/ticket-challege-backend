@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { User } from 'src/modules/users/entities/user.entity';
@@ -22,13 +17,13 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy) {
     if (user == undefined)
       throw new HttpException(
         'Please provide a valid user.',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if (checkPassword) {
       return user;
     }
-    throw new UnauthorizedException();
+    throw new HttpException('Invalid credentials.', HttpStatus.UNAUTHORIZED);
   }
 }
